@@ -33,18 +33,43 @@ router.post('/', validateProjectNameDes, validateProjectCompleted, async (req,re
 })
 
 //Returns the updated project as the body of the response.
-router.put('/:id', validateProjectNameDes, validateProjectCompleted, validateProjectId, async (req,res) => {
+router.put('/:id', validateProjectNameDes, validateProjectCompleted, validateProjectId, (req,res) => {
+    const {id} = req.params
+    const {name, description, completed} = req.body
 
+    Projects.update(id, {name, description, completed})
+            .then(updatedProject => {
+                res.status(200).json(updatedProject)
+            })
+            .catch(err => {
+                res.status(500).json({message: "an error occurred updating the project with that id"})
+            })
 })
 
 //Returns no response body.
 router.delete('/:id', validateProjectId, async (req,res) => {
+    const {id} = req.params
 
+    Projects.remove(id)
+            .then(deletedProject => {
+                res.status(200).json(deletedProject)
+            })
+            .catch(err => {
+                res.status(500).json({message: "an error occurred deleting the project with that id"})
+            })
 })
 
 //Returns an array of actions (could be empty) belonging to a project with the given `id`.
 router.get('/:id/actions', validateProjectId, async (req,res) => {
+    const {id} = req.params
 
+    Projects.getProjectActions(id)
+            .then(actions => {
+                res.status(200).json(actions)
+            })
+            .catch(err => {
+                res.status(500).json({message: "an error occurred the actions from that project id"})
+            })
 })
 
 //exports
