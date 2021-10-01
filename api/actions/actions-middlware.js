@@ -21,5 +21,22 @@ async function validateActionId(req,res,next){
     }
 }
 
+//validates request body to make sure required fields are filled out
+function validateActionBody(req, res, next){
+    try {
+        const {project_id, description, notes, completed} = req.body
+
+        if(!project_id || !description || !notes || typeof completed==="undefined"){
+            res.status(400).json({message: "please fill out all fields"})
+        }
+        else {
+            next();
+        }
+    }
+    catch{
+        res.status(500).json({message: "an error occurred validating the action with that id"})
+    }
+}
+
 //exports
-module.exports = {validateActionId};
+module.exports = {validateActionId, validateActionBody};
