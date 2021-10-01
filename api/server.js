@@ -1,10 +1,10 @@
 //imports
 const express = require('express');
-const server = express();
-
 //building routers
 const projectsRouter = require('./projects/projects-router.js');
 const actionsRouter = require('./actions/actions-router.js');
+const server = express();
+
 
 //configuring server
 server.use(express.json());
